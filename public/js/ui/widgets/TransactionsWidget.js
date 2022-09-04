@@ -12,7 +12,11 @@ class TransactionsWidget {
    * необходимо выкинуть ошибку.
    * */
   constructor( element ) {
-
+    if (!element) {
+      throw new Error("Невалидное значение для TransactionsWidget");
+    }
+    this.element = element;
+    this.registerEvents();
   }
   /**
    * Регистрирует обработчики нажатия на
@@ -21,6 +25,17 @@ class TransactionsWidget {
    * экземпляра окна
    * */
   registerEvents() {
-
+    const transactionsPanel = document.querySelectorAll('.transactions-panel > button');
+    transactionsPanel.forEach(button => {
+      button.addEventListener('click', (e) => {
+        e.preventDefault();
+        if(e.target.className.includes('btn-success')) {
+          App.getModal('newIncome').open();
+        }
+        if(e.target.className.includes('btn-danger')) {
+          App.getModal('newExpense').open();
+        }
+      });
+    });
   }
 }
